@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Space, Table, Tag } from 'antd';
 import axios from 'axios';
+import moment, { Moment } from 'moment';
+import { ColumnType } from 'antd/lib/table';
 
-// const dataSource = [
-//     {
-//         id: 1,
-//         filmName: 'naruto',
-//         filmDescription: 'string',
-//         supervisor: 'Marina',
-//         theatre: 'Орлёнок',
-//         date: '2022-03-20T14:00',
-//         duration: '01:20',
-//         status: 'ok'
-//     },
-//     {
-//         id: 2,
-//         filmName: 'Spange bOb',
-//         filmDescription: 'bifejkwhbkjejef fe wnf ewfnwjfujrgklfsd',
-//         supervisor: 'Olesya',
-//         theatre: 'Седьмое небо',
-//         date: '2022-03-21T19:30',
-//         duration: '01:45',
-//         status: 'upgoing'
-//     }
-// ];
+function deleteFromList(id: number | string) {
+    console.log('delete' + id);
+}
+interface Session {
+    id: number;
+    filmName: string;
+    filmDescription: string;
+    supervisor: string;
+    theatre: string;
+    date: string | Moment;
+    duration: string;
+    status: string;
+}
 
-const columns = [
+const columns: ColumnType<Session>[] = [
     {
         title: 'Название',
         dataIndex: 'filmName',
@@ -39,17 +32,50 @@ const columns = [
     {
         title: 'Ответственный',
         dataIndex: 'supervisor',
-        key: 'supervisor'
+        key: 'supervisor',
+        filters: [
+            {
+                text: 'Хорошилова Марина',
+                value: 'Хорошилова Марина'
+            },
+            {
+                text: 'Сергеева Олеся',
+                value: 'Сергеева Олеся'
+            }
+        ],
+        onFilter: (value: string | number | boolean, session: Session) =>
+            session.supervisor === value
     },
     {
         title: 'Локация',
         dataIndex: 'theatre',
-        key: 'theatre'
+        key: 'theatre',
+        filters: [
+            {
+                text: 'Орлёнок',
+                value: 'Орлёнок'
+            },
+            {
+                text: 'Седьмое небо',
+                value: 'Седьмое небо'
+            },
+            {
+                text: 'Небо',
+                value: 'Небо'
+            }
+        ],
+        onFilter: (value: string | number | boolean, session: Session) =>
+            session.theatre === value
     },
     {
         title: 'Дата',
         dataIndex: 'date',
-        key: 'date'
+        key: 'date',
+        // render: (date: string) => (
+        //     <Space size="middle">{moment(date, 'YYYY-MM-DD')}</Space>
+        // ),
+        sorter: (a: Session, b: Session) =>
+            moment(a.date).isAfter(b.date) ? 1 : -1
     },
     {
         title: 'Длительность',
@@ -60,27 +86,43 @@ const columns = [
         title: 'Статус',
         key: 'status',
         dataIndex: 'status',
-        render: (tag: string) => (
-            <span>
-                {tag === 'upgoing' ? (
-                    <Tag color={'green'} key={tag}>
-                        {tag.toUpperCase()}
-                    </Tag>
-                ) : (
-                    <Tag color={'volcano'} key={tag}>
-                        {tag.toUpperCase()}
-                    </Tag>
-                )}
-            </span>
-        )
+        render: (tag: string) => {
+            let color = 'default';
+            if (tag === 'ожидается') {
+                color = 'blue';
+            } else if (tag === 'идёт') {
+                color = 'green';
+            }
+            return (
+                <Tag color={color} key={tag}>
+                    {tag.toUpperCase()}
+                </Tag>
+            );
+        },
+        filters: [
+            {
+                text: 'прошёл',
+                value: 'прошёл'
+            },
+            {
+                text: 'идёт',
+                value: 'идёт'
+            },
+            {
+                text: 'ожидается',
+                value: 'ожидается'
+            }
+        ],
+        onFilter: (value: string | number | boolean, session: Session) =>
+            session.status === value
     },
     {
         title: 'Action',
         key: 'action',
-        render: () => (
+        render: (session: Session) => (
             <Space size="middle">
                 <a>Edit</a>
-                <a>Delete</a>
+                <a onClick={() => deleteFromList(session.id)}>Delete</a>
             </Space>
         )
     }

@@ -21,14 +21,13 @@ sessionRouter.get("/", async (req: Request, res: Response) => {
 // GET sessionList/:id
 
 sessionRouter.get("/:id", async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id, 10);
-    
-    SessionModel.find({$where: {id: id}}, (error, result) =>{
-        if(error){
-            res.send(error);
+    const id: number = req.params.id;
+    await SessionModel.findById(id, (err, result)=> {
+        if (err) {
+            res.send(err);
         }
         res.send(result);
-    });
+    };
 });
 
 // POST sessionList

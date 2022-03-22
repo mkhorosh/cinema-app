@@ -1,11 +1,11 @@
 export interface BaseSession {
   filmName: string;
   filmDescription: string;
-  supervisor: string;  //TODO change to a person interface
-  theatre: string;  //TODO change to a place interface
-  date: string;  //TODO string or date type??????????
+  supervisor: string;
+  theatre: string;
+  date: Date;
   duration: string;
-  status: string;  //TODO enum? как вычисляется?
+  status: string;
 };
 
 export interface Session extends BaseSession {

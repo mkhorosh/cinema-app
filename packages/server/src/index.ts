@@ -3,13 +3,11 @@ import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
 
 const express = require("express");
-const mongoose = require("mongoose");  //TODO: change to redis
+const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 
 
-
-//убрать
 mongoose.connect(`mongodb+srv://${process.env.MONGO_LOGIN}:${process.env.MONGO_PASSWORD}@cinema-app-cluster.ldyyk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
 })
@@ -29,7 +27,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use("/api/menu/items", sessionRouter);  //TODO items ли?
+app.use("/sessions", sessionRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

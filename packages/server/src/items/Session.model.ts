@@ -1,5 +1,19 @@
 const mongoose = require("mongoose");
 
+export interface BaseSession {
+    filmName: string;
+    filmDescription: string;
+    supervisor: string;
+    theatre: string;
+    date: Date;
+    duration: string;
+    status: string;
+  };
+  
+  export interface Session extends BaseSession {
+    id: number;
+  }
+
 const SessionSchema = new mongoose.Schema({
     filmName: { type: String, required: true },
     filmDescription: { type: String },

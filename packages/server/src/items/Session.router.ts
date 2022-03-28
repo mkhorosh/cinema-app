@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 // import * as SessionService from "./Sessions.service";
-import { BaseSession, Session } from "./Session.interface";
+import { BaseSession, Session } from "./Session.model";
 import { parse } from "path";
 
 
@@ -22,13 +22,13 @@ sessionRouter.get("/", async (req: Request, res: Response) => {
 
 sessionRouter.get("/:id", async (req: Request, res: Response) => {
     const id: number = req.params.id;
+    console.log("here");
     await SessionModel.findById(id, (err, result)=> {
         if (err) {
             res.send(err);
         }
         res.send(result);
-    };
-});
+})});
 
 // POST sessionList
 
@@ -62,8 +62,8 @@ sessionRouter.put("/:id", async (req: Request, res: Response) => {
 
 // DELETE sessionList/:id
 
-sessionRouter.delete("/:id", async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id, 10);
+sessionRouter.delete("/delete/:id", async (req: Request, res: Response) => {
+    const id: number = req.params.id;
     await SessionModel.findByIdAndRemove(id).exec();
     res.send("deleted");
 });

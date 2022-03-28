@@ -1,4 +1,4 @@
-import { Session } from "./Session.interface";
+import { Session } from "./Session.model";
 
 export interface Sessions {
     [key: number]: Session;

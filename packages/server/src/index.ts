@@ -10,6 +10,10 @@ const dotenv = require("dotenv").config();
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_LOGIN}:${process.env.MONGO_PASSWORD}@cinema-app-cluster.ldyyk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+}, () => {
+    console.log('connected to database')
 })
 
 
@@ -27,7 +31,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use("/sessions", sessionRouter);
+app.use("/", sessionRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

@@ -10,18 +10,7 @@ export const Header = () => {
                 title="Менеджер киносеансов"
                 subTitle="This is a subtitle"
                 extra={[
-                    <Button key="2">
-                        <EditOutlined />
-                    </Button>,
-                    <EditOutlined
-                        key="4"
-                        onClick={() => console.log('edit2')}
-                    />,
-                    <Button
-                        key="1"
-                        type="primary"
-                        onClick={() => console.log('edit')}
-                    >
+                    <Button key="1" type="primary">
                         Добавить <EditOutlined />
                     </Button>
                 ]}

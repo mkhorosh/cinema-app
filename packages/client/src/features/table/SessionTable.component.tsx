@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Tag } from 'antd';
+import { Modal, Space, Table, Tag } from 'antd';
 import axios from 'axios';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import { ColumnType } from 'antd/lib/table';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Session } from '../../common/Session';
 
-function deleteFromList(id: number | string) {
-    console.log('delete' + id);
-}
-interface Session {
-    id: number;
-    filmName: string;
-    filmDescription: string;
-    supervisor: string;
-    theatre: string;
-    date: string | Moment;
-    duration: string;
-    status: string;
+const { confirm } = Modal;
+
+function showDeleteConfirm(id: string) {
+    confirm({
+        title: 'Are you sure delete this task?',
+        icon: <ExclamationCircleOutlined />,
+        content: 'Some descriptions',
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk() {
+            console.log('OK');
+            axios.delete(`http://localhost:3003/delete/${id}`);
+        },
+        onCancel() {
+            console.log('Cancel');
+        }
+    });
 }
 
 const columns: ColumnType<Session>[] = [
@@ -72,7 +80,7 @@ const columns: ColumnType<Session>[] = [
         dataIndex: 'date',
         key: 'date',
         // render: (date: string) => (
-        //     <Space size="middle">{moment(date, 'YYYY-MM-DD')}</Space>
+        //     <Space size="middle">{new Date(date).toISOString}</Space>
         // ),
         sorter: (a: Session, b: Session) =>
             moment(a.date).isAfter(b.date) ? 1 : -1
@@ -121,8 +129,8 @@ const columns: ColumnType<Session>[] = [
         key: 'action',
         render: (session: Session) => (
             <Space size="middle">
-                <a>Edit</a>
-                <a onClick={() => deleteFromList(session.id)}>Delete</a>
+                <a onClick={() => console.log('edit' + session)}>Edit</a>
+                <a onClick={() => showDeleteConfirm(session._id)}>Delete</a>
             </Space>
         )
     }

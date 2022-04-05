@@ -1,5 +1,6 @@
 import { Session } from '../../common/Session';
-import { GET_SESSIONS, SessionActions } from '../actions/sessions.actions';
+import { SET_SESSIONS } from '../actions/sessions';
+import { SessionActions } from '../actions/sessions.actions';
 
 interface SessionsInitState {
     sessionsList: Session[];
@@ -14,10 +15,10 @@ export function sessionsReducer(
     state = initState
 ): SessionsInitState {
     switch (action.type) {
-        case GET_SESSIONS:
+        case SET_SESSIONS:
             return {
                 ...state,
-                ...action
+                ...action.payload
             };
         default:
             return state;

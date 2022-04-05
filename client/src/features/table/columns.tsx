@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Space, Table, Tag } from 'antd';
-import axios from 'axios';
-import moment from 'moment';
+import {
+    QuestionOutlined,
+    UpCircleOutlined,
+    RightCircleOutlined,
+    DownCircleOutlined
+} from '@ant-design/icons';
+import { Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import React from 'react';
 import { Session } from '../../common/Session';
 
-const { confirm } = Modal;
-
-function showDeleteConfirm(id: string) {
-    confirm({
-        title: 'Are you sure delete this task?',
-        icon: <ExclamationCircleOutlined />,
-        content: 'Some descriptions',
-        okText: 'Yes',
-        okType: 'danger',
-        cancelText: 'No',
-        onOk() {
-            console.log('OK');
-            axios.delete(`http://localhost:3003/delete/${id}`);
-        },
-        onCancel() {
-            console.log('Cancel');
+export const columns: ColumnType<Session>[] = [
+    {
+        title: '',
+        key: 'icon',
+        dataIndex: 'status',
+        render: (tag: string) => {
+            let icon: JSX.Element = <QuestionOutlined />;
+            switch (tag) {
+                case 'ожидается':
+                    icon = <UpCircleOutlined />;
+                    break;
+                case 'идёт':
+                    icon = <RightCircleOutlined />;
+                    break;
+                default:
+                    icon = <DownCircleOutlined />;
+            }
+            return <>{icon}</>;
         }
-    });
-}
-
-const columns: ColumnType<Session>[] = [
+    },
     {
         title: 'Название',
         dataIndex: 'filmName',
@@ -96,10 +99,15 @@ const columns: ColumnType<Session>[] = [
         dataIndex: 'status',
         render: (tag: string) => {
             let color = 'default';
-            if (tag === 'ожидается') {
-                color = 'blue';
-            } else if (tag === 'идёт') {
-                color = 'green';
+            switch (tag) {
+                case 'ожидается':
+                    color = 'blue';
+                    break;
+                case 'идёт':
+                    color = 'green';
+                    break;
+                default:
+                    color = 'default';
             }
             return (
                 <Tag color={color} key={tag}>
@@ -123,31 +131,5 @@ const columns: ColumnType<Session>[] = [
         ],
         onFilter: (value: string | number | boolean, session: Session) =>
             session.status === value
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (session: Session) => (
-            <Space size="middle">
-                <a onClick={() => console.log('edit' + session)}>Edit</a>
-                <a onClick={() => showDeleteConfirm(session._id)}>Delete</a>
-            </Space>
-        )
     }
 ];
-
-export const SessionTable = () => {
-    const [sessionList, setSessionList] = useState([]);
-
-    useEffect(() => {
-        axios.get('http://localhost:3003/').then((response) => {
-            setSessionList(response.data);
-        });
-    }, [sessionList]);
-
-    return (
-        <div>
-            <Table dataSource={sessionList} columns={columns} rowKey="_id" />
-        </div>
-    );
-};

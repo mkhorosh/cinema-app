@@ -1,21 +1,31 @@
 import { Session } from '../../common/Session';
 import {
-    DeleteSession,
-    DELETE_SESSION,
-    GetSessions,
-    GET_SESSIONS,
-    SetSessions,
-    SET_SESSIONS
+    CreateSessionAction,
+    DeleteSessionAction,
+    EditSessionAction,
+    GetSessionsAction,
+    SessionsActionTypes,
+    SetSessionsAction
 } from './sessions';
 
-export const getSessions = (): GetSessions => ({ type: GET_SESSIONS });
-export const deleteSession = (sessionKey: string): DeleteSession => ({
-    type: DELETE_SESSION,
+export const getSessions = (): GetSessionsAction => ({
+    type: SessionsActionTypes.GET_SESSIONS
+});
+export const setSessions = (sessions: Session[]): SetSessionsAction => ({
+    type: SessionsActionTypes.SET_SESSIONS,
+    payload: { sessions }
+});
+export const deleteSession = (sessionKey: string): DeleteSessionAction => ({
+    type: SessionsActionTypes.DELETE_SESSION,
     payload: { sessionKey }
 });
-export const setSessions = (sessionsList: Session[]): SetSessions => ({
-    type: SET_SESSIONS,
-    payload: { sessionsList }
+
+export const editSession = (newSession: Session): EditSessionAction => ({
+    type: SessionsActionTypes.EDIT_SESSION,
+    payload: { newSession }
 });
 
-export type SessionActions = GetSessions;
+export const createSession = (newSession: Session): CreateSessionAction => ({
+    type: SessionsActionTypes.CREATE_SESSION,
+    payload: { newSession }
+});

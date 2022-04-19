@@ -1,19 +1,28 @@
-import React from 'react';
-import { Button, PageHeader } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import React, { FC, PropsWithChildren } from 'react';
+import { createSession } from '../../store/actions/sessions.actions';
+import { connect } from 'react-redux';
+import { CreateSessionButton } from './CreateSessionButton.component';
+import { PageHeader } from 'antd';
+import { Session } from '../../common/Session';
 
-export const Header = () => {
+interface HeaderProps {
+    createSessionAction: (newSession: Session) => void;
+}
+
+export const Header: FC<HeaderProps> = ({
+    createSessionAction
+}: PropsWithChildren<HeaderProps>) => {
     return (
-        <div>
-            <PageHeader
-                title="Менеджер киносеансов"
-                subTitle="This is a subtitle"
-                extra={[
-                    <Button key="1" type="primary">
-                        Добавить <EditOutlined />
-                    </Button>
-                ]}
-            />
-        </div>
+        <PageHeader
+            title="Менеджер киносеансов"
+            subTitle="This is a subtitle"
+            extra={[
+                <CreateSessionButton createSession={createSessionAction} />
+            ]}
+        />
     );
 };
+
+export default connect(null, {
+    createSessionAction: createSession
+})(Header);

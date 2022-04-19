@@ -2,5 +2,7 @@ import { combineReducers } from 'redux';
 import { sessionsReducer } from './sessionsReducer';
 
 export const rootReducer = combineReducers({
-    sessionsReducer
+    sessions: sessionsReducer
 });
+
+export type RootState = ReturnType<typeof rootReducer>;

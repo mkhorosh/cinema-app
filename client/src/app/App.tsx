@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Header } from '../features/header/Header.component';
+import Header from '../features/header/Header.component';
 import { Layout } from 'antd';
 import { Content, Footer } from 'antd/lib/layout/layout';
 import { SessionModal } from '../features/modal/SessionModal.component';
-import { SessionTable } from '../features/table/SessionTable.component';
+import SessionTableContainer from '../features/table/SessionTableContainer';
 
 function App() {
     return (
@@ -16,7 +16,7 @@ function App() {
                         element={
                             <>
                                 <Header />
-                                <SessionTable />
+                                <SessionTableContainer />
                                 <SessionModal />
                             </>
                         }

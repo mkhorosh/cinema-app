@@ -1,26 +1,22 @@
-import { Session } from '../../common/Session';
-import { SET_SESSIONS } from '../actions/sessions';
-import { SessionActions } from '../actions/sessions.actions';
+import {
+    SessionsAction,
+    SessionsActionTypes,
+    SessionsState
+} from '../actions/sessions';
 
-interface SessionsInitState {
-    sessionsList: Session[];
-}
-
-const initState: SessionsInitState = {
-    sessionsList: [] as Session[]
+const initState: SessionsState = {
+    sessions: []
 };
 
-export function sessionsReducer(
-    action: SessionActions,
-    state = initState
-): SessionsInitState {
+export const sessionsReducer = (
+    // eslint-disable-next-line @typescript-eslint/default-param-last
+    state = initState,
+    action: SessionsAction
+): SessionsState => {
     switch (action.type) {
-        case SET_SESSIONS:
-            return {
-                ...state,
-                ...action.payload
-            };
+        case SessionsActionTypes.SET_SESSIONS:
+            return { ...state, ...action.payload };
         default:
             return state;
     }
-}
+};

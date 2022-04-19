@@ -1,8 +1,6 @@
 import express, { Request, Response } from "express";
-// import * as SessionService from "./Sessions.service";
 import { BaseSession, Session } from "./Session.model";
 import { parse } from "path";
-
 
 export const sessionRouter = express.Router();
 const SessionModel = require("./Session.model");
@@ -10,60 +8,64 @@ const SessionModel = require("./Session.model");
 // GET sessionList
 
 sessionRouter.get("/", async (req: Request, res: Response) => {
-    SessionModel.find({}, (error, result) =>{
-        if(error){
-            res.send(error);
-        }
+  try {
+    SessionModel.find({}, (error, result) => {
+      if (error) {
+        res.send(error);
+      } else {
         res.send(result);
+      }
     });
+  } catch (e) {
+    console.log("MY_" + e);
+  }
 });
 
 // GET sessionList/:id
 
 sessionRouter.get("/:id", async (req: Request, res: Response) => {
-    const id: number = req.params.id;
-    console.log("here");
-    await SessionModel.findById(id, (err, result)=> {
-        if (err) {
-            res.send(err);
-        }
-        res.send(result);
-})});
+  const id: number = req.params.id;
+  await SessionModel.findById(id, (err, result) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(result);
+  });
+});
 
 // POST sessionList
 
 sessionRouter.post("/", async (req: Request, res: Response) => {
-    const session: BaseSession = req.body;
-    const newItem = new SessionModel({session});
-    try {
-        await newItem.save();
-        res.send("inserted data");
-    } catch(err) {
-        console.log(err);
-    }
+  const session: BaseSession = req.body;
+  const newItem = new SessionModel({ session });
+  try {
+    await newItem.save();
+    res.send("inserted data");
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // PUT sessionList/:id
 
 sessionRouter.put("/:id", async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id, 10);
-    const newItem: Session = req.body;
-
-    try {
-        await SessionModel.findById(id, (err, updateItem)=> {
-            updateItem = newItem;
-            updateItem.save();
-            res.send("update");
-        })
-    } catch(err) {
-        console.log(err);
-    }
+  const id: number = parseInt(req.params.id, 10);
+  const newItem: Session = req.body;
+  try {
+    await SessionModel.findById(id, (err, updateItem) => {
+      updateItem = newItem;
+      updateItem.save();
+      res.send("update");
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // DELETE sessionList/:id
 
 sessionRouter.delete("/delete/:id", async (req: Request, res: Response) => {
-    const id: number = req.params.id;
-    await SessionModel.findByIdAndRemove(id).exec();
-    res.send("deleted");
+  const id: number = req.params.id;
+  await SessionModel.findByIdAndRemove(id).exec();
+  res.send("deleted");
 });

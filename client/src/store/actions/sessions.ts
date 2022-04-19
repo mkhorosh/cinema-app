@@ -1,21 +1,45 @@
 import { Session } from '../../common/Session';
 
-export const GET_SESSIONS: string = 'GET_SESSIONS';
-export const DELETE_SESSION: string = 'DELETE_SESSION';
-export const SET_SESSIONS: string = 'SET_SESSIONS';
-
-export interface GetSessions {
-    type: typeof GET_SESSIONS;
+export interface SessionsState {
+    sessions: Session[];
 }
 
-export interface DeleteSession {
-    type: typeof DELETE_SESSION;
+export enum SessionsActionTypes {
+    GET_SESSIONS = 'GET_SESSIONS',
+    SET_SESSIONS = 'SET_SESSIONS',
+    DELETE_SESSION = 'DELETE_SESSION',
+    EDIT_SESSION = 'EDIT_SESSION',
+    CREATE_SESSION = 'CREATE_SESSION'
+}
+
+export interface SetSessionsAction {
+    type: SessionsActionTypes.SET_SESSIONS;
+    payload: {
+        sessions: Session[];
+    };
+}
+
+export interface GetSessionsAction {
+    type: SessionsActionTypes.GET_SESSIONS;
+}
+export interface DeleteSessionAction {
+    type: SessionsActionTypes.DELETE_SESSION;
     payload: { sessionKey: string };
 }
 
-export interface SetSessions {
-    type: typeof SET_SESSIONS;
-    payload: {
-        sessionsList: Session[];
-    };
+export interface EditSessionAction {
+    type: SessionsActionTypes.EDIT_SESSION;
+    payload: { newSession: Session };
 }
+
+export interface CreateSessionAction {
+    type: SessionsActionTypes.CREATE_SESSION;
+    payload: { newSession: Session };
+}
+
+export type SessionsAction =
+    | SetSessionsAction
+    | GetSessionsAction
+    | DeleteSessionAction
+    | EditSessionAction
+    | CreateSessionAction;

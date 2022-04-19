@@ -1,5 +1,7 @@
-import { DeleteSession } from '../../store/actions/sessions';
+import { Session } from '../../common/Session';
 
 export interface SessionTableProps {
-    dispatchDeleteSession?: (key: string) => DeleteSession;
+    sessionList: Session[];
+    deleteSession: (id: string) => void;
+    editSession: (newSession: Session) => void;
 }

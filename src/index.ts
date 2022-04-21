@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 
+//test
+
 mongoose.connect(
   `mongodb+srv://${process.env.MONGO_LOGIN}:${process.env.MONGO_PASSWORD}@cinema-app-cluster.ldyyk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
   {

@@ -1,71 +1,68 @@
 import express, { Request, Response } from "express";
 import { BaseSession, Session } from "./Session.model";
-import { parse } from "path";
 
 export const sessionRouter = express.Router();
-const SessionModel = require("./Session.model");
+const dotenv = require("dotenv").config();
+
+const CosmosClient = require("@azure/cosmos").CosmosClient;
+const cosmosClient = new CosmosClient({
+  endpoint: process.env.BD_ENDPOINT,
+  key: process.env.BD_KEY,
+});
+
+const database = cosmosClient.database(process.env.BD_NAME);
+const container = database.container(process.env.BD_CONTAINER);
 
 // GET sessionList
 
 sessionRouter.get("/", async (req: Request, res: Response) => {
-  try {
-    SessionModel.find({}, (error, result) => {
-      if (error) {
-        res.send(error);
-      } else {
-        res.send(result);
-      }
-    });
-  } catch (e) {
-    console.log("MY_" + e);
-  }
+  const querySpec = {
+    query: "SELECT * from c",
+  };
+
+  const { resources: items } = await container.items
+    .query(querySpec)
+    .fetchAll();
+  res.send(items);
 });
 
 // GET sessionList/:id
 
 sessionRouter.get("/:id", async (req: Request, res: Response) => {
   const id: number = req.params.id;
-  await SessionModel.findById(id, (err, result) => {
-    if (err) {
-      res.send(err);
-    }
-    res.send(result);
-  });
+  const querySpec = {
+    query: `SELECT * from c WHERE c.id="${id}"`,
+  };
+
+  const { resources: items } = await container.items
+    .query(querySpec)
+    .fetchAll();
+  res.send(items);
 });
 
 // POST sessionList
 
 sessionRouter.post("/", async (req: Request, res: Response) => {
   const session: BaseSession = req.body;
-  const newItem = new SessionModel({ session });
-  try {
-    await newItem.save();
-    res.send("inserted data");
-  } catch (err) {
-    console.log(err);
-  }
+  const { resource: doc } = await container.items.create(session);
+  res.send("session is created");
 });
 
 // PUT sessionList/:id
 
 sessionRouter.put("/:id", async (req: Request, res: Response) => {
-  const id: number = parseInt(req.params.id, 10);
-  const newItem: Session = req.body;
-  try {
-    await SessionModel.findById(id, (err, updateItem) => {
-      updateItem = newItem;
-      updateItem.save();
-      res.send("update");
-    });
-  } catch (err) {
-    console.log(err);
-  }
+  const id: number = req.params.id;
+  const newItem: BaseSession = req.body;
+  // let doc = await container.item(id).read();
+  // doc = newItem;
+  const { resource: replaced } = await container.item(id).replace(newItem);
+  res.send("item updated");
 });
 
 // DELETE sessionList/:id
 
 sessionRouter.delete("/delete/:id", async (req: Request, res: Response) => {
   const id: number = req.params.id;
-  await SessionModel.findByIdAndRemove(id).exec();
+  const { resource } = await container.item(id).delete();
   res.send("deleted");
 });

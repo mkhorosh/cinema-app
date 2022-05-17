@@ -1,17 +1,18 @@
-import React, { FC } from 'react';
-import { Modal, Space, Table } from 'antd';
+import React, { FC, useState } from 'react';
+import { Form, Modal, Space, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import { Session } from '../../common/Session';
 import { columns } from './columns';
-import { SessionTableProps } from './SessionTable.props';
+import { SessionTableProps } from './SessionTable.types';
+import SessionModal from '../modal/SessionModal.component';
 
 const { confirm } = Modal;
 
 export const SessionTable: FC<SessionTableProps> = ({
-    sessionList,
-    deleteSession,
-    editSession
+    sessions,
+    isLoading,
+    deleteSession
 }) => {
     const showDeleteConfirm = (id: string) => {
         confirm({
@@ -21,11 +22,7 @@ export const SessionTable: FC<SessionTableProps> = ({
             okType: 'danger',
             cancelText: 'Отмена',
             onOk() {
-                try {
-                    deleteSession(id);
-                } catch (e) {
-                    console.log(e);
-                }
+                deleteSession(id);
             },
             onCancel() {
                 console.log('Cancel');
@@ -33,9 +30,10 @@ export const SessionTable: FC<SessionTableProps> = ({
         });
     };
 
-    const showEditSessionModal = (session: Session) => {
-        editSession(session);
-    };
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [sessionForEdit, setSessionForEdit] = useState<Session>();
+
+    const [form] = Form.useForm();
 
     const tableColumns: ColumnType<Session>[] = [
         ...columns,
@@ -43,11 +41,18 @@ export const SessionTable: FC<SessionTableProps> = ({
             title: '',
             key: 'edit',
             render: (session: Session) => (
-                <Space size="middle">
-                    <button onClick={() => showEditSessionModal(session)}>
-                        Edit
-                    </button>
-                </Space>
+                <>
+                    <Space size="middle">
+                        <button
+                            onClick={() => {
+                                setIsModalVisible(true);
+                                setSessionForEdit(session);
+                            }}
+                        >
+                            Изменить
+                        </button>
+                    </Space>
+                </>
             )
         },
         {
@@ -55,15 +60,32 @@ export const SessionTable: FC<SessionTableProps> = ({
             key: 'delete',
             render: (session: Session) => (
                 <Space size="middle">
-                    <button onClick={() => showDeleteConfirm(session._id)}>
-                        Delete
+                    <button onClick={() => showDeleteConfirm(session.id)}>
+                        Удалить
                     </button>
                 </Space>
             )
         }
     ];
 
+    if (isLoading) {
+        return <SyncOutlined spin />;
+    }
+
     return (
-        <Table dataSource={sessionList} columns={tableColumns} rowKey="_id" />
+        <>
+            {' '}
+            <Table dataSource={sessions} columns={tableColumns} rowKey="id" />
+            <SessionModal
+                showModal={isModalVisible}
+                onClose={() => {
+                    setIsModalVisible(false);
+                    form.resetFields();
+                }}
+                type="EDIT"
+                sessionInfo={sessionForEdit}
+                form={form}
+            />
+        </>
     );
 };

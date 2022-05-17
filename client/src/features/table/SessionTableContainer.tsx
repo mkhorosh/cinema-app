@@ -3,49 +3,38 @@ import { connect } from 'react-redux';
 import { SessionTable } from './SessionTable.component';
 import {
     deleteSession,
-    editSession,
     getSessions
 } from '../../store/actions/sessions.actions';
-import { Session } from '../../common/Session';
 import { RootState } from '../../store/reducers/rootReducer';
-
-interface SessionTableContainerProps {
-    sessions: Session[];
-    getSessionsAction: () => void;
-    deleteSessionAction: (id: string) => void;
-    editSessionAction: (newSession: Session) => void;
-}
+import { SessionTableContainerProps } from './SessionTableContainer.types';
 
 export const SessionTableContainer: FC<SessionTableContainerProps> = ({
     sessions,
+    isLoading,
     getSessionsAction,
-    deleteSessionAction,
-    editSessionAction
+    deleteSessionAction
 }: PropsWithChildren<SessionTableContainerProps>) => {
     useEffect(() => {
-        try {
-            getSessionsAction();
-        } catch (e) {
-            console.log(e);
-        }
+        getSessionsAction();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <SessionTable
-            sessionList={sessions}
+            sessions={sessions}
+            isLoading={isLoading}
             deleteSession={deleteSessionAction}
-            editSession={editSessionAction}
         />
     );
 };
 
 const mapStateToProps = (state: RootState) => ({
-    sessions: state.sessions.sessions
+    sessions: state.sessions.sessionsList,
+    isLoading: state.sessions.isLoading
 });
 
 export default connect(mapStateToProps, {
     getSessionsAction: getSessions,
-    deleteSessionAction: deleteSession,
-    editSessionAction: editSession
+    deleteSessionAction: deleteSession
 })(SessionTableContainer);

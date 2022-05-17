@@ -1,12 +1,8 @@
-import {
-    QuestionOutlined,
-    UpCircleOutlined,
-    RightCircleOutlined,
-    DownCircleOutlined
-} from '@ant-design/icons';
-import { Tag } from 'antd';
+import { PushpinOutlined } from '@ant-design/icons';
+import { Space, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import moment from 'moment';
+import 'moment/locale/ru';
 import React from 'react';
 import { Session } from '../../common/Session';
 
@@ -14,20 +10,40 @@ export const columns: ColumnType<Session>[] = [
     {
         title: '',
         key: 'icon',
-        dataIndex: 'status',
+        dataIndex: 'genre',
         render: (tag: string) => {
-            let icon: JSX.Element = <QuestionOutlined />;
+            let color = '';
+
             switch (tag) {
-                case 'ожидается':
-                    icon = <UpCircleOutlined />;
+                case 'детектив':
+                    color = 'red';
                     break;
-                case 'идёт':
-                    icon = <RightCircleOutlined />;
+                case 'драма':
+                    color = 'orange';
+                    break;
+                case 'триллер':
+                    color = 'yellow';
+                    break;
+                case 'ужасы':
+                    color = 'green';
+                    break;
+                case 'боевик':
+                    color = 'blue';
+                    break;
+                case 'приключения':
+                    color = 'purple';
+                    break;
+                case 'мелодрама':
+                    color = 'pink';
+                    break;
+                case 'комедия':
+                    color = 'cian';
                     break;
                 default:
-                    icon = <DownCircleOutlined />;
+                    break;
             }
-            return <>{icon}</>;
+
+            return <PushpinOutlined style={{ color, fontSize: '20px' }} />;
         }
     },
     {
@@ -82,9 +98,11 @@ export const columns: ColumnType<Session>[] = [
         title: 'Дата',
         dataIndex: 'date',
         key: 'date',
-        // render: (date: string) => (
-        //     <Space size="middle">{new Date(date).toISOString}</Space>
-        // ),
+        render: (date: string) => (
+            <Space size="middle">
+                {moment(date).locale('ru').format('dddd, MMMM Do YYYY')}
+            </Space>
+        ),
         sorter: (a: Session, b: Session) =>
             moment(a.date).isAfter(b.date) ? 1 : -1
     },
@@ -94,9 +112,9 @@ export const columns: ColumnType<Session>[] = [
         key: 'duration'
     },
     {
-        title: 'Статус',
-        key: 'status',
-        dataIndex: 'status',
+        title: 'Жанр',
+        key: 'genre',
+        dataIndex: 'genre',
         render: (tag: string) => {
             let color = 'default';
             switch (tag) {
@@ -130,6 +148,6 @@ export const columns: ColumnType<Session>[] = [
             }
         ],
         onFilter: (value: string | number | boolean, session: Session) =>
-            session.status === value
+            session.genre === value
     }
 ];

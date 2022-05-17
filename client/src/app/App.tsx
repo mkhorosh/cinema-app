@@ -1,33 +1,49 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Header from '../features/header/Header.component';
-import { Layout } from 'antd';
-import { Content, Footer } from 'antd/lib/layout/layout';
-import { SessionModal } from '../features/modal/SessionModal.component';
-import SessionTableContainer from '../features/table/SessionTableContainer';
+import React, { FC, PropsWithChildren, useEffect } from 'react';
+import { Avatar, Layout, Menu } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { RoutesAuth } from './RoutesAuth.component';
+import { RootState } from '../store/reducers/rootReducer';
+import { connect } from 'react-redux';
+import { logOut, setLogin } from '../store/actions/login.actions';
+import { AppProps } from './App.types';
 
-function App() {
+export const App: FC<AppProps> = ({
+    isAuth,
+    setLoginAction,
+    logoutAction
+}: PropsWithChildren<AppProps>) => {
+    useEffect(() => {
+        const data: string | null = localStorage.getItem('USER_DATA');
+        if (data != null) {
+            let dataObject = JSON.parse(data);
+            setLoginAction(dataObject.login, dataObject.token);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <Layout>
-            <Content>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <>
-                                <Header />
-                                <SessionTableContainer />
-                                <SessionModal />
-                            </>
-                        }
-                    />
-                    <Route path="/login" element={<h1>login page</h1>} />
-                    <Route path="*" element={<h1>page not found 404</h1>} />
-                </Routes>
-            </Content>
-            <Footer>cinema-app 2022 created by mkhorosh</Footer>
+            <Layout.Header>
+                <Menu mode="horizontal" theme={'dark'}>
+                    {isAuth && (
+                        <Menu.Item key="2" onClick={logoutAction}>
+                            <Avatar icon={<UserOutlined />} /> Выйти
+                        </Menu.Item>
+                    )}
+                </Menu>
+            </Layout.Header>
+            <Layout.Content>
+                <RoutesAuth isAuth={isAuth} />
+            </Layout.Content>
+            <Layout.Footer>cinema-app 2022 created by mkhorosh</Layout.Footer>
         </Layout>
     );
-}
+};
 
-export default App;
+const mapStateToProps = (state: RootState) => ({
+    isAuth: state.login.login ? true : false
+});
+
+export default connect(mapStateToProps, {
+    setLoginAction: setLogin,
+    logoutAction: logOut
+})(App);

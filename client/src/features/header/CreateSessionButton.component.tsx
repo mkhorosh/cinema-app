@@ -1,33 +1,32 @@
 import { EditOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
-import React, { FC } from 'react';
-import { Session } from '../../common/Session';
+import { Button, Form } from 'antd';
+import React, { useState } from 'react';
+import SessionModal from '../modal/SessionModal.component';
 
-interface CreateSessionButtonProps {
-    createSession: (newSession: Session) => void;
-}
+export const CreateSessionButton = () => {
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
-export const CreateSessionButton: FC<CreateSessionButtonProps> = ({
-    createSession
-}) => {
+    const [form] = Form.useForm();
+
     const showCreateSessionModal = () => {
-        console.log('modal');
-        let newSession: Session = {
-            _id: '',
-            filmName: '',
-            filmDescription: '',
-            supervisor: '',
-            theatre: '',
-            date: '',
-            duration: '',
-            status: ''
-        };
-        createSession(newSession);
+        setIsModalVisible(true);
     };
 
     return (
-        <Button key="1" type="primary" onClick={() => showCreateSessionModal()}>
-            Добавить <EditOutlined />
-        </Button>
+        <>
+            <Button key="1" type="primary" onClick={showCreateSessionModal}>
+                Добавить <EditOutlined />
+            </Button>
+            <SessionModal
+                showModal={isModalVisible}
+                onClose={() => {
+                    setIsModalVisible(false);
+                    form.resetFields();
+                }}
+                type="CREATE"
+                sessionInfo={undefined}
+                form={form}
+            />
+        </>
     );
 };

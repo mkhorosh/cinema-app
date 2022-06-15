@@ -1,4 +1,4 @@
-import { LogoutAction } from '../store/actions/login.types';
+import { LogoutAction } from '../store/actions/users.types';
 
 export interface AppProps {
     isAuth: boolean;

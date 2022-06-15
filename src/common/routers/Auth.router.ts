@@ -9,8 +9,8 @@ import { userContainer } from "../../index";
 export interface User {
   login: string;
   password: string;
-  fullName: string;
-  dateOfBirth: string;
+  name: string;
+  date: string;
   position: string;
 }
 
@@ -24,30 +24,30 @@ authRouter.post("/login", async (req: Request, res: Response) => {
       .query(querySpec)
       .fetchAll();
     if (items.length === 0) {
-      res.status(500).send("incorrect login ");
+      res.status(500).send("Неверный логин или пароль");
       return;
     }
 
     const isCorrectPassword = await bcrypt.compare(password, items[0].password);
     if (!isCorrectPassword) {
-      res.status(500).send("incorrect password");
+      res.status(500).send("Неверный логин или пароль");
       return;
     }
 
     const user = { login: login };
 
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "2 days",
+      expiresIn: "1 min",
     });
     res.json({ login: login, accessToken: accessToken });
   } catch (e) {
-    res.status(500).json({ message: "Something goes wrong. Try again" });
+    res.status(500).json({ message: "Что-то пошло не так. Попробуйте снова" });
   }
 });
 
 authRouter.post("/register", async (req: Request, res: Response) => {
   try {
-    const { login, password, fullName, dateOfBirth, position } = req.body;
+    const { login, password, name, date, position } = req.body;
 
     const querySpec = {
       query: `SELECT * from c WHERE c.login="${login}"`,
@@ -57,19 +57,19 @@ authRouter.post("/register", async (req: Request, res: Response) => {
       .fetchAll();
 
     if (items.length !== 0) {
-      return res.send(items);
+      return res.status(500).send("логин уже занят");
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
     const user: User = {
       login,
       password: hashedPassword,
-      fullName,
-      dateOfBirth,
+      name,
+      date,
       position,
     };
     const { resource: doc } = await userContainer.items.create(user);
-    res.send("user is created");
+    res.send("пользователь создан");
   } catch (e) {
     res.status(500).send(e);
   }

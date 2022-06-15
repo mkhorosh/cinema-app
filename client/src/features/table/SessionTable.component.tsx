@@ -1,16 +1,18 @@
 import React, { FC, useState } from 'react';
 import { Form, Modal, Space, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
-import { ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Session } from '../../common/Session';
 import { columns } from './columns';
 import { SessionTableProps } from './SessionTable.types';
 import SessionModal from '../modal/SessionModal.component';
+import { Loader } from '../Loader.component';
 
 const { confirm } = Modal;
 
 export const SessionTable: FC<SessionTableProps> = ({
     sessions,
+    users,
     isLoading,
     deleteSession
 }) => {
@@ -23,9 +25,6 @@ export const SessionTable: FC<SessionTableProps> = ({
             cancelText: 'Отмена',
             onOk() {
                 deleteSession(id);
-            },
-            onCancel() {
-                console.log('Cancel');
             }
         });
     };
@@ -69,12 +68,11 @@ export const SessionTable: FC<SessionTableProps> = ({
     ];
 
     if (isLoading) {
-        return <SyncOutlined spin />;
+        return <Loader />;
     }
 
     return (
         <>
-            {' '}
             <Table dataSource={sessions} columns={tableColumns} rowKey="id" />
             <SessionModal
                 showModal={isModalVisible}
@@ -85,6 +83,7 @@ export const SessionTable: FC<SessionTableProps> = ({
                 type="EDIT"
                 sessionInfo={sessionForEdit}
                 form={form}
+                users={users}
             />
         </>
     );

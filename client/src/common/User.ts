@@ -3,7 +3,7 @@ import { Moment } from 'moment';
 export interface User {
     login: string;
     password: string;
-    fullName: string;
-    dateOfBirth: string | Moment;
+    name: string;
+    date: string | Moment;
     position: string;
 }

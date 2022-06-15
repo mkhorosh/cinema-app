@@ -6,7 +6,7 @@ export const sessionRouter = express.Router();
 
 // GET sessionList
 
-sessionRouter.get("/", async (req: Request, res: Response) => {
+sessionRouter.get("", async (req: Request, res: Response) => {
   const querySpec = {
     query: "SELECT * from c",
   };
@@ -19,10 +19,10 @@ sessionRouter.get("/", async (req: Request, res: Response) => {
 
 // POST sessionList
 
-sessionRouter.post("/", async (req: Request, res: Response) => {
+sessionRouter.post("", async (req: Request, res: Response) => {
   const session: BaseSession = req.body;
   const { resource: doc } = await sessionContainer.items.create(session);
-  res.send("session is created");
+  res.send("запись создана");
 });
 
 // PUT sessionList/:id
@@ -33,13 +33,13 @@ sessionRouter.put("/:id", async (req: Request, res: Response) => {
   const { resource: replaced } = await sessionContainer
     .item(id)
     .replace(newItem);
-  res.send("item updated");
+  res.send("запись обновлена");
 });
 
 // DELETE sessionList/:id
 
-sessionRouter.delete("/delete/:id", async (req: Request, res: Response) => {
+sessionRouter.delete("/:id", async (req: Request, res: Response) => {
   const id: number = req.params.id;
   const { resource } = await sessionContainer.item(id).delete();
-  res.send("deleted");
+  res.send("удалено");
 });

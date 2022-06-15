@@ -3,7 +3,8 @@ export interface BaseSession {
   filmDescription: string;
   supervisor: string;
   theatre: string;
-  date: Date;
+  startDate: Date;
+  endDate: Date;
   duration: string;
   genre: string;
 }

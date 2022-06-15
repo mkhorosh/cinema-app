@@ -1,30 +1,57 @@
 import { Button, DatePicker, Form, Input, Select } from 'antd';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader } from '../../Loader.component';
 import { positionOptions } from './Register.constants';
 import { RegisterProps } from './Register.types';
 
-export const Register: FC<RegisterProps> = ({ isLoading, onFinish }) => {
-    if (isLoading) {
-        return <Loader />;
-    }
+export const Register: FC<RegisterProps> = ({ onFinish }) => {
     return (
         <Form onFinish={onFinish}>
-            <Form.Item name="login">
-                <Input placeholder="Login" />
+            <Form.Item
+                name="login"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Укажите логин!'
+                    }
+                ]}
+            >
+                <Input placeholder="Логин" />
             </Form.Item>
-            <Form.Item name="name">
-                <Input placeholder="name" />
+            <Form.Item
+                name="name"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Введите ФИО!'
+                    },
+                    {
+                        pattern: /^[a-zA-Zа-яА-Я\s]*$/,
+                        message: 'ФИО не должны содержать цифр и спецсимволы!'
+                    }
+                ]}
+            >
+                <Input placeholder="ФИО" />
             </Form.Item>
             <Form.Item name="date">
                 <DatePicker />
             </Form.Item>
             <Form.Item name="position">
-                <Select options={positionOptions} />
+                <Select
+                    options={positionOptions}
+                    placeholder="Выберите должность"
+                />
             </Form.Item>
-            <Form.Item name="password">
-                <Input.Password placeholder="Password" />
+            <Form.Item
+                name="password"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Укажите пароль!'
+                    }
+                ]}
+            >
+                <Input.Password placeholder="Пароль" />
             </Form.Item>
 
             <Form.Item>
@@ -32,7 +59,7 @@ export const Register: FC<RegisterProps> = ({ isLoading, onFinish }) => {
                     Зарегистрироваться
                 </Button>
             </Form.Item>
-            <Link to="/login">login now!</Link>
+            <Link to="/login">Войти</Link>
         </Form>
     );
 };

@@ -4,7 +4,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { RoutesAuth } from './RoutesAuth.component';
 import { RootState } from '../store/reducers/rootReducer';
 import { connect } from 'react-redux';
-import { logOut, setLogin } from '../store/actions/login.actions';
+import { logOut, setLogin } from '../store/actions/users.actions';
 import { AppProps } from './App.types';
 
 export const App: FC<AppProps> = ({
@@ -14,7 +14,7 @@ export const App: FC<AppProps> = ({
 }: PropsWithChildren<AppProps>) => {
     useEffect(() => {
         const data: string | null = localStorage.getItem('USER_DATA');
-        if (data != null) {
+        if (data) {
             let dataObject = JSON.parse(data);
             setLoginAction(dataObject.login, dataObject.token);
         }
@@ -40,7 +40,7 @@ export const App: FC<AppProps> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-    isAuth: state.login.login ? true : false
+    isAuth: state.users.login ? true : false
 });
 
 export default connect(mapStateToProps, {

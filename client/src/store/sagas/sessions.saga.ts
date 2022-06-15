@@ -2,9 +2,8 @@ import {
     deleteSessionApi,
     getSessionsApi,
     editSessionApi,
-    createSessionApi,
-    getUsersApi
-} from './sessions.api';
+    createSessionApi
+} from './api';
 import { call, put, SagaReturnType, takeEvery } from 'redux-saga/effects';
 import {
     CreateSessionAction,
@@ -15,13 +14,12 @@ import {
 import {
     getSessions,
     setLoading,
-    setSessions,
-    setUsers
+    setSessions
 } from '../actions/sessions.actions';
+import { message } from 'antd';
 
 type DeleteResponse = SagaReturnType<typeof deleteSessionApi>;
 type GetSessionsResponse = SagaReturnType<typeof getSessionsApi>;
-type GetUsersResponse = SagaReturnType<typeof getUsersApi>;
 type EditSessionResponse = SagaReturnType<typeof editSessionApi>;
 type CreateSessionResponse = SagaReturnType<typeof createSessionApi>;
 
@@ -30,10 +28,11 @@ function* deleteSessionSaga({ payload }: DeleteSessionAction) {
         yield put(setLoading(true));
         const response: DeleteResponse = yield call(deleteSessionApi, payload);
         if (response.status === 200) {
-            console.log('deleting success');
+            message.success('запись удалена');
             yield put(getSessions());
         }
     } catch (e) {
+        message.error('проблемы с удалением записи');
         console.log(e);
         yield put(setLoading(false));
     }
@@ -53,17 +52,6 @@ function* getSessionsSaga() {
     }
 }
 
-function* getUsersSaga() {
-    try {
-        const response: GetUsersResponse = yield call(getUsersApi);
-        if (response.status === 200) {
-            yield put(setUsers(response.data));
-        }
-    } catch (e) {
-        console.log(e);
-    }
-}
-
 function* editSessionSaga({ payload }: EditSessionAction) {
     try {
         yield put(setLoading(true));
@@ -72,9 +60,11 @@ function* editSessionSaga({ payload }: EditSessionAction) {
             payload
         );
         if (response.status === 200) {
+            message.success('запись отредактирована');
             yield put(getSessions());
         }
     } catch (e) {
+        message.error('проблемы с редактированием записи');
         console.log(e);
         yield put(setLoading(false));
     }
@@ -88,9 +78,11 @@ function* createSessionSaga({ payload }: CreateSessionAction) {
             payload
         );
         if (response.status === 200) {
+            message.success('запись создана');
             yield put(getSessions());
         }
     } catch (e) {
+        message.error('проблемы с созданием записи');
         console.log(e);
         yield put(setLoading(false));
     }
@@ -99,7 +91,6 @@ function* createSessionSaga({ payload }: CreateSessionAction) {
 export function* sessionsWatcher() {
     yield takeEvery(SessionsActionTypes.DELETE_SESSION, deleteSessionSaga);
     yield takeEvery(SessionsActionTypes.GET_SESSIONS, getSessionsSaga);
-    yield takeEvery(SessionsActionTypes.GET_USERS, getUsersSaga);
     yield takeEvery(SessionsActionTypes.EDIT_SESSION, editSessionSaga);
     yield takeEvery(SessionsActionTypes.CREATE_SESSION, createSessionSaga);
 }

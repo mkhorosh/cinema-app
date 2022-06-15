@@ -1,13 +1,9 @@
 import { Button, Form, Input } from 'antd';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader } from '../../Loader.component';
 import { LoginProps } from './Login.types';
 
-export const Login: FC<LoginProps> = ({ isLoading, onFinish }) => {
-    if (isLoading) {
-        return <Loader />;
-    }
+export const Login: FC<LoginProps> = ({ onFinish }) => {
     return (
         <Form onFinish={onFinish}>
             <Form.Item
@@ -15,7 +11,7 @@ export const Login: FC<LoginProps> = ({ isLoading, onFinish }) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Please input your login'
+                        message: 'Укажите логин!'
                     }
                 ]}
             >
@@ -27,7 +23,7 @@ export const Login: FC<LoginProps> = ({ isLoading, onFinish }) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Please input your password'
+                        message: 'Укажите пароль!'
                     }
                 ]}
             >
@@ -39,7 +35,7 @@ export const Login: FC<LoginProps> = ({ isLoading, onFinish }) => {
                     Вход
                 </Button>
             </Form.Item>
-            <Link to="/register">register now!</Link>
+            <Link to="/register">Зарегистрироваться</Link>
         </Form>
     );
 };

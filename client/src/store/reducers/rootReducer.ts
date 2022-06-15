@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux';
-import { loginReducer } from './login.Reducer';
-import { registerReducer } from './register.Reducer';
 import { sessionsReducer } from './sessionsReducer';
+import { usersReducer } from './usersReduser';
 
 export const rootReducer = combineReducers({
     sessions: sessionsReducer,
-    login: loginReducer,
-    register: registerReducer
+    users: usersReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

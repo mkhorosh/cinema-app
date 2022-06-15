@@ -13,7 +13,7 @@ export const RoutesAuth: FC<RoutesAuthProps> = ({
         return (
             <Routes>
                 <Route
-                    path="/"
+                    path=""
                     element={
                         <>
                             <Header />
@@ -21,7 +21,7 @@ export const RoutesAuth: FC<RoutesAuthProps> = ({
                         </>
                     }
                 />
-                <Route path="*" element={<Navigate to="/" replace />} />
+                <Route path="*" element={<Navigate to="" replace />} />
             </Routes>
         );
     }

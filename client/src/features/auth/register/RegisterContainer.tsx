@@ -1,15 +1,10 @@
 import React, { FC, PropsWithChildren, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { register } from '../../../store/actions/register.actions';
-import { RootState } from '../../../store/reducers/rootReducer';
+import { register } from '../../../store/actions/users.actions';
 import { Register } from './Register.component';
-import {
-    RegisterContainerProps,
-    RegisterData
-} from './RegisterContainer.types';
+import { RegisterContainerProps, RegisterData } from './Register.types';
 
 export const RegisterContainer: FC<RegisterContainerProps> = ({
-    isLoading,
     registerAction
 }: PropsWithChildren<RegisterContainerProps>) => {
     const onFinish = useCallback(
@@ -22,16 +17,10 @@ export const RegisterContainer: FC<RegisterContainerProps> = ({
     );
     return (
         <>
-            <h1>register</h1>
-            <Register isLoading={isLoading} onFinish={onFinish} />
+            <h1>Регистрация</h1>
+            <Register onFinish={onFinish} />
         </>
     );
 };
 
-const mapStateToProps = (state: RootState) => ({
-    isLoading: state.register.isRegisterLoading
-});
-
-export default connect(mapStateToProps, { registerAction: register })(
-    RegisterContainer
-);
+export default connect(null, { registerAction: register })(RegisterContainer);

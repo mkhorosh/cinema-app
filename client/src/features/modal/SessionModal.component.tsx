@@ -1,13 +1,11 @@
 import { Modal } from 'antd';
 import moment from 'moment';
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 import { connect } from 'react-redux';
 import {
     createSession,
-    editSession,
-    getUsers
+    editSession
 } from '../../store/actions/sessions.actions';
-import { RootState } from '../../store/reducers/rootReducer';
 import { SessionForm } from '../form/SessionForm.component';
 import {
     CreateValues,
@@ -22,23 +20,19 @@ export const SessionModal: FC<SessionModalProps> = ({
     sessionInfo,
     form,
     users,
-    getUsersAction,
     createSessionAction,
     editSessionAction
 }) => {
-    const modalTitle = type === 'CREATE' ? 'CREATE' : 'EDIT';
-
-    useEffect(() => {
-        getUsersAction();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const modalTitle =
+        type === 'CREATE' ? 'Добавить запись' : 'Редактировать запись';
 
     const onFinishCreate = useCallback(
         (values: CreateValues): void => {
             createSessionAction({
                 ...values,
                 duration: moment(values.duration).format('HH:mm'),
-                date: moment(values.date)
+                startDate: moment(values.startDate),
+                endDate: moment(values.endDate)
             });
             onClose();
         },
@@ -51,7 +45,8 @@ export const SessionModal: FC<SessionModalProps> = ({
                 ...values,
                 id: sessionInfo ? sessionInfo.id : '',
                 duration: moment(values.duration).format('HH:mm'),
-                date: moment(values.date)
+                startDate: moment(values.startDate),
+                endDate: moment(values.endDate)
             });
             onClose();
         },
@@ -76,12 +71,7 @@ export const SessionModal: FC<SessionModalProps> = ({
     );
 };
 
-const mapStateToProps = (state: RootState) => ({
-    users: state.sessions.users
-});
-
-export default connect(mapStateToProps, {
+export default connect(null, {
     createSessionAction: createSession,
-    editSessionAction: editSession,
-    getUsersAction: getUsers
+    editSessionAction: editSession
 })(SessionModal);

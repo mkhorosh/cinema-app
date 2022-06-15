@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreateSessionButton } from './CreateSessionButton.component';
+import CreateSessionButton from './CreateSessionButton.component';
 import { PageHeader } from 'antd';
 
 export const Header = () => {

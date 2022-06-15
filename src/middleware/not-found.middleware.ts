@@ -5,7 +5,7 @@ export const notFoundHandler = (
   response: Response,
   next: NextFunction
 ) => {
-  const message = "Resource not found";
+  const message = "Страница не найдена";
 
   response.status(404).send(message);
 };

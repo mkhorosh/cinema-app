@@ -1,10 +1,11 @@
-import { PushpinOutlined } from '@ant-design/icons';
 import { Space, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import moment from 'moment';
 import 'moment/locale/ru';
 import React from 'react';
+import { genres, theatres } from '../../common/constants';
 import { Session } from '../../common/Session';
+import { SessionIcon } from '../icon/SessionIcon.component';
 
 export const columns: ColumnType<Session>[] = [
     {
@@ -12,38 +13,7 @@ export const columns: ColumnType<Session>[] = [
         key: 'icon',
         dataIndex: 'genre',
         render: (tag: string) => {
-            let color = '';
-
-            switch (tag) {
-                case 'детектив':
-                    color = 'red';
-                    break;
-                case 'драма':
-                    color = 'orange';
-                    break;
-                case 'триллер':
-                    color = 'yellow';
-                    break;
-                case 'ужасы':
-                    color = 'green';
-                    break;
-                case 'боевик':
-                    color = 'blue';
-                    break;
-                case 'приключения':
-                    color = 'purple';
-                    break;
-                case 'мелодрама':
-                    color = 'pink';
-                    break;
-                case 'комедия':
-                    color = 'cian';
-                    break;
-                default:
-                    break;
-            }
-
-            return <PushpinOutlined style={{ color, fontSize: '20px' }} />;
+            return <SessionIcon genre={tag} />;
         }
     },
     {
@@ -60,16 +30,6 @@ export const columns: ColumnType<Session>[] = [
         title: 'Ответственный',
         dataIndex: 'supervisor',
         key: 'supervisor',
-        filters: [
-            {
-                text: 'Хорошилова Марина',
-                value: 'Хорошилова Марина'
-            },
-            {
-                text: 'Сергеева Олеся',
-                value: 'Сергеева Олеся'
-            }
-        ],
         onFilter: (value: string | number | boolean, session: Session) =>
             session.supervisor === value
     },
@@ -77,34 +37,38 @@ export const columns: ColumnType<Session>[] = [
         title: 'Локация',
         dataIndex: 'theatre',
         key: 'theatre',
-        filters: [
-            {
-                text: 'Орлёнок',
-                value: 'Орлёнок'
-            },
-            {
-                text: 'Седьмое небо',
-                value: 'Седьмое небо'
-            },
-            {
-                text: 'Небо',
-                value: 'Небо'
-            }
-        ],
+        filters: theatres.map((theatre: string) => {
+            return {
+                text: theatre,
+                value: theatre
+            };
+        }),
         onFilter: (value: string | number | boolean, session: Session) =>
             session.theatre === value
     },
     {
-        title: 'Дата',
-        dataIndex: 'date',
-        key: 'date',
-        render: (date: string) => (
+        title: 'Дата Start',
+        dataIndex: 'startDate',
+        key: 'startDate',
+        render: (startDate: string) => (
             <Space size="middle">
-                {moment(date).locale('ru').format('dddd, MMMM Do YYYY')}
+                {moment(startDate).locale('ru').format('D MMMM  YYYY')}
             </Space>
         ),
         sorter: (a: Session, b: Session) =>
-            moment(a.date).isAfter(b.date) ? 1 : -1
+            moment(a.startDate).isAfter(b.startDate) ? 1 : -1
+    },
+    {
+        title: 'Дата End',
+        dataIndex: 'endDate',
+        key: 'endDate',
+        render: (endDate: string) => (
+            <Space size="middle">
+                {moment(endDate).locale('ru').format('D MMMM  YYYY')}
+            </Space>
+        ),
+        sorter: (a: Session, b: Session) =>
+            moment(a.endDate).isAfter(b.endDate) ? 1 : -1
     },
     {
         title: 'Длительность',
@@ -116,37 +80,18 @@ export const columns: ColumnType<Session>[] = [
         key: 'genre',
         dataIndex: 'genre',
         render: (tag: string) => {
-            let color = 'default';
-            switch (tag) {
-                case 'ожидается':
-                    color = 'blue';
-                    break;
-                case 'идёт':
-                    color = 'green';
-                    break;
-                default:
-                    color = 'default';
-            }
             return (
-                <Tag color={color} key={tag}>
+                <Tag color="default" key={tag}>
                     {tag.toUpperCase()}
                 </Tag>
             );
         },
-        filters: [
-            {
-                text: 'прошёл',
-                value: 'прошёл'
-            },
-            {
-                text: 'идёт',
-                value: 'идёт'
-            },
-            {
-                text: 'ожидается',
-                value: 'ожидается'
-            }
-        ],
+        filters: genres.map((state: string) => {
+            return {
+                text: state,
+                value: state
+            };
+        }),
         onFilter: (value: string | number | boolean, session: Session) =>
             session.genre === value
     }

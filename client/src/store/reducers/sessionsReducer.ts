@@ -6,8 +6,7 @@ import {
 
 const initState: SessionsState = {
     sessionsList: [],
-    isLoading: false,
-    users: []
+    isLoading: false
 };
 
 export const sessionsReducer = (
@@ -17,8 +16,6 @@ export const sessionsReducer = (
 ): SessionsState => {
     switch (action.type) {
         case SessionsActionTypes.SET_SESSIONS:
-            return { ...state, ...action.payload };
-        case SessionsActionTypes.SET_USERS:
             return { ...state, ...action.payload };
         case SessionsActionTypes.SESSIONS_LOADING:
             return { ...state, ...action.payload };

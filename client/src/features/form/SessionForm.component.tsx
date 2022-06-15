@@ -1,9 +1,10 @@
 import { Button, DatePicker, Form, Input, Select, TimePicker } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
-import moment from 'moment';
-import React, { FC, useEffect } from 'react';
+import moment, { Moment } from 'moment';
+import React, { FC, useEffect, useState } from 'react';
 import { User } from '../../common/User';
-import { statusOptions, theatresOptions } from './SessionForm.constants';
+import { SessionIcon } from '../icon/SessionIcon.component';
+import { genres, theatres } from '../../common/constants';
 import { SessionFormProps } from './SessionForm.types';
 
 export const SessionForm: FC<SessionFormProps> = ({
@@ -17,14 +18,16 @@ export const SessionForm: FC<SessionFormProps> = ({
             ? form.setFieldsValue({
                   ...sessionInfo,
                   duration: moment(sessionInfo.duration, 'HH:mm'),
-                  date: moment(sessionInfo.date)
+                  startDate: moment(sessionInfo.startDate),
+                  endDate: moment(sessionInfo.endDate)
               })
             : form.setFieldsValue({
                   filmName: '',
                   filmDescription: '',
                   supervisor: '',
                   theatre: '',
-                  date: moment(),
+                  startDate: moment(),
+                  endDate: '',
                   duration: '',
                   genre: ''
               });
@@ -32,10 +35,18 @@ export const SessionForm: FC<SessionFormProps> = ({
 
     const usersOptions = users.map((user: User) => {
         return {
-            label: user.fullName,
-            value: user.fullName
+            label: user.name,
+            value: user.name
         };
     });
+
+    const disabledDate = (currentDate: Moment) =>
+        currentDate && currentDate < moment().startOf('day');
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let [iconGenre, setIconGenre] = useState(
+        sessionInfo ? sessionInfo.genre : ''
+    );
 
     return (
         <Form
@@ -45,6 +56,9 @@ export const SessionForm: FC<SessionFormProps> = ({
             onFinish={handleFormSubmit}
             form={form}
         >
+            <Form.Item label="Иконка" name="icon">
+                <SessionIcon genre={iconGenre} />
+            </Form.Item>
             <Form.Item
                 label="Название"
                 name="filmName"
@@ -74,7 +88,10 @@ export const SessionForm: FC<SessionFormProps> = ({
                 <TextArea />
             </Form.Item>
             <Form.Item label="Ответственный" name="supervisor">
-                <Select placeholder="Select assigner" options={usersOptions} />
+                <Select
+                    placeholder="Выберите ответственного"
+                    options={usersOptions}
+                />
             </Form.Item>
             <Form.Item
                 label="Локация"
@@ -82,18 +99,36 @@ export const SessionForm: FC<SessionFormProps> = ({
                 rules={[
                     {
                         required: true,
-                        message: 'Выберите локацию!'
+                        message: 'Укажите локацию!'
                     }
                 ]}
             >
                 <Select
-                    placeholder="Select theatre"
-                    options={theatresOptions}
+                    placeholder="Выберите локацию"
+                    options={theatres.map((theatre: string) => {
+                        return {
+                            label: theatre,
+                            value: theatre
+                        };
+                    })}
                 />
             </Form.Item>
             <Form.Item
-                label="Дата и время"
-                name="date"
+                label="Дата"
+                name="startDate"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Укажите время сеанса!'
+                    }
+                ]}
+            >
+                <DatePicker format="YYYY-MM-DD" hideDisabledOptions />
+            </Form.Item>
+
+            <Form.Item
+                label="Дата 2"
+                name="endDate"
                 rules={[
                     {
                         required: true,
@@ -102,10 +137,9 @@ export const SessionForm: FC<SessionFormProps> = ({
                 ]}
             >
                 <DatePicker
-                    format="YYYY-MM-DD HH:mm"
+                    format="YYYY-MM-DD"
                     hideDisabledOptions
-                    disabled
-                    showTime={{ defaultValue: moment('00:00', 'HH:mm') }}
+                    disabledDate={disabledDate}
                 />
             </Form.Item>
 
@@ -128,15 +162,24 @@ export const SessionForm: FC<SessionFormProps> = ({
                 rules={[
                     {
                         required: true,
-                        message: 'Выберите жанр!'
+                        message: 'Укажите жанр!'
                     }
                 ]}
             >
-                <Select options={statusOptions} />
+                <Select
+                    placeholder="Выберите жанр"
+                    options={genres.map((state: string) => {
+                        return {
+                            label: state,
+                            value: state
+                        };
+                    })}
+                    onChange={(value: string) => setIconGenre(value)}
+                />
             </Form.Item>
             <Form.Item>
                 <Button type="primary" htmlType="submit">
-                    Submit
+                    Готово
                 </Button>
             </Form.Item>
         </Form>

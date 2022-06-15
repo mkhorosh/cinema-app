@@ -7,7 +7,8 @@ export interface CreateValues {
     filmDescription: string;
     supervisor: string;
     theatre: string;
-    date: string | Moment;
+    startDate: string | Moment;
+    endDate: string | Moment;
     duration: string | Moment;
     genre: string;
 }
@@ -17,7 +18,8 @@ export interface EditValues {
     filmDescription: string;
     supervisor: string;
     theatre: string;
-    date: string | Moment;
+    startDate: string | Moment;
+    endDate: string | Moment;
     duration: string | Moment;
     genre: string;
 }
@@ -28,7 +30,8 @@ interface EditSessionI {
     filmDescription: string;
     supervisor: string;
     theatre: string;
-    date: string | Moment;
+    startDate: string | Moment;
+    endDate: string | Moment;
     duration: string | Moment;
     genre: string;
 }
@@ -38,7 +41,8 @@ interface CreateSessionI {
     filmDescription: string;
     supervisor: string;
     theatre: string;
-    date: string | Moment;
+    startDate: string | Moment;
+    endDate: string | Moment;
     duration: string | Moment;
     genre: string;
 }
@@ -46,10 +50,9 @@ export interface SessionModalProps {
     showModal: boolean;
     onClose: () => void;
     type: 'CREATE' | 'EDIT';
-    sessionInfo: Session | undefined;
+    sessionInfo?: Session;
     form: any;
     users: User[];
-    getUsersAction: () => void;
     createSessionAction: (values: CreateSessionI) => void;
     editSessionAction: (values: EditSessionI) => void;
 }

@@ -7,7 +7,8 @@ export interface OnFinishValues {
     filmDescription: string;
     supervisor: string;
     theatre: string;
-    date: string | Moment;
+    startDate: string | Moment;
+    endDate: string | Moment;
     duration: string | Moment;
     genre: string;
 }

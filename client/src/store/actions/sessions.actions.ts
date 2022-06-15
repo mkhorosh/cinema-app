@@ -1,5 +1,4 @@
 import { Session } from '../../common/Session';
-import { User } from '../../common/User';
 import {
     CreateActionPayload,
     CreateSessionAction,
@@ -7,11 +6,9 @@ import {
     EditActionPayload,
     EditSessionAction,
     GetSessionsAction,
-    GetUsersAction,
     SessionsActionTypes,
     SetLoadingAction,
-    SetSessionsAction,
-    SetUsersAction
+    SetSessionsAction
 } from './sessions.types';
 
 export const getSessions = (): GetSessionsAction => ({
@@ -27,14 +24,6 @@ export const setLoading = (isLoading: boolean): SetLoadingAction => ({
     payload: { isLoading }
 });
 
-export const getUsers = (): GetUsersAction => ({
-    type: SessionsActionTypes.GET_USERS
-});
-export const setUsers = (users: User[]): SetUsersAction => ({
-    type: SessionsActionTypes.SET_USERS,
-    payload: { users }
-});
-
 export const deleteSession = (sessionKey: string): DeleteSessionAction => ({
     type: SessionsActionTypes.DELETE_SESSION,
     payload: sessionKey
@@ -46,7 +35,8 @@ export const editSession = ({
     filmDescription,
     supervisor,
     theatre,
-    date,
+    startDate,
+    endDate,
     duration,
     genre
 }: EditActionPayload): EditSessionAction => ({
@@ -57,7 +47,8 @@ export const editSession = ({
         filmDescription,
         supervisor,
         theatre,
-        date,
+        startDate,
+        endDate,
         duration,
         genre
     }
@@ -68,7 +59,8 @@ export const createSession = ({
     filmDescription,
     supervisor,
     theatre,
-    date,
+    startDate,
+    endDate,
     duration,
     genre
 }: CreateActionPayload): CreateSessionAction => ({
@@ -78,7 +70,8 @@ export const createSession = ({
         filmDescription,
         supervisor,
         theatre,
-        date,
+        startDate,
+        endDate,
         duration,
         genre
     }

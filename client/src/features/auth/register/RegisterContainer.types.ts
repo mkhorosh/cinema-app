@@ -1,8 +1,7 @@
 import { Moment } from 'moment';
-import { RegisterPayload } from '../../../store/actions/register.types';
+import { RegisterPayload } from '../../../store/actions/users.types';
 
 export interface RegisterContainerProps {
-    isLoading: boolean;
     registerAction: ({
         login,
         name,

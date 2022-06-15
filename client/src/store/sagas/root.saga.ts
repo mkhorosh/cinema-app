@@ -1,8 +1,7 @@
 import { all } from 'redux-saga/effects';
-import { loginWatcher } from './login.saga';
-import { registerWatcher } from './register.saga';
 import { sessionsWatcher } from './sessions.saga';
+import { usersWatcher } from './users.saga';
 
 export function* rootWatcher() {
-    yield all([sessionsWatcher(), loginWatcher(), registerWatcher()]);
+    yield all([sessionsWatcher(), usersWatcher()]);
 }

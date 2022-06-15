@@ -1,6 +1,13 @@
-import { UserData } from './LoginContainer.types';
+import { LoginPayload } from '../../../store/actions/users.types';
 
+export interface LoginContainerProps {
+    loginAction: ({ login, password }: LoginPayload) => void;
+}
+
+export interface UserData {
+    login: string;
+    password: string;
+}
 export interface LoginProps {
-    isLoading: boolean;
     onFinish: (values: UserData) => void;
 }

@@ -7,22 +7,26 @@ import {
 } from '../../store/actions/sessions.actions';
 import { RootState } from '../../store/reducers/rootReducer';
 import { SessionTableContainerProps } from './SessionTableContainer.types';
+import { getUsers } from '../../store/actions/users.actions';
 
 export const SessionTableContainer: FC<SessionTableContainerProps> = ({
     sessions,
+    users,
     isLoading,
     getSessionsAction,
-    deleteSessionAction
+    deleteSessionAction,
+    getUsersAction
 }: PropsWithChildren<SessionTableContainerProps>) => {
     useEffect(() => {
         getSessionsAction();
-
+        getUsersAction();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <SessionTable
             sessions={sessions}
+            users={users}
             isLoading={isLoading}
             deleteSession={deleteSessionAction}
         />
@@ -31,10 +35,12 @@ export const SessionTableContainer: FC<SessionTableContainerProps> = ({
 
 const mapStateToProps = (state: RootState) => ({
     sessions: state.sessions.sessionsList,
+    users: state.users.users,
     isLoading: state.sessions.isLoading
 });
 
 export default connect(mapStateToProps, {
     getSessionsAction: getSessions,
+    getUsersAction: getUsers,
     deleteSessionAction: deleteSession
 })(SessionTableContainer);

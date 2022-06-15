@@ -1,9 +1,18 @@
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Form } from 'antd';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
+import { connect } from 'react-redux';
+import { User } from '../../common/User';
+import { RootState } from '../../store/reducers/rootReducer';
 import SessionModal from '../modal/SessionModal.component';
 
-export const CreateSessionButton = () => {
+interface CreateSessionButtonProps {
+    users: User[];
+}
+
+export const CreateSessionButton: FC<CreateSessionButtonProps> = ({
+    users
+}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const [form] = Form.useForm();
@@ -24,9 +33,15 @@ export const CreateSessionButton = () => {
                     form.resetFields();
                 }}
                 type="CREATE"
-                sessionInfo={undefined}
                 form={form}
+                users={users}
             />
         </>
     );
 };
+
+const mapStateToProps = (state: RootState) => ({
+    users: state.users.users
+});
+
+export default connect(mapStateToProps)(CreateSessionButton);

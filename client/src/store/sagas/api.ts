@@ -13,7 +13,7 @@ import { LoginPayload, RegisterPayload } from '../actions/users.types';
 // console.log(localStorage.getItem('USER_DATA'));
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3003/'
+    baseURL: ''
     // withCredentials: true,
 
     // headers: {

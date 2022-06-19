@@ -33,12 +33,10 @@ export const SessionForm: FC<SessionFormProps> = ({
               });
     }, [form, sessionInfo]);
 
-    const usersOptions = users.map((user: User) => {
-        return {
-            label: user.name,
-            value: user.name
-        };
-    });
+    const usersOptions = users.map((user: User) => ({
+        label: user.name,
+        value: user.name
+    }));
 
     const disabledDate = (currentDate: Moment) =>
         currentDate && currentDate < moment().startOf('day');

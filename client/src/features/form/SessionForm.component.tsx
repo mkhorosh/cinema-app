@@ -56,6 +56,9 @@ export const SessionForm: FC<SessionFormProps> = ({
             onFinish={handleFormSubmit}
             form={form}
         >
+            {/* <Form.Item label="id" name="id" style={{ display: 'none' }}>
+                <Input />
+            </Form.Item> */}
             <Form.Item label="Иконка" name="icon">
                 <SessionIcon genre={iconGenre} />
             </Form.Item>

@@ -3,6 +3,7 @@ import { Session } from '../../common/Session';
 import { User } from '../../common/User';
 
 export interface OnFinishValues {
+    id: string;
     filmName: string;
     filmDescription: string;
     supervisor: string;

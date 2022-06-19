@@ -7,7 +7,9 @@
     "build": "tsc",
     "start": "node .",
     "nodemon": "nodemon ./src/index.ts",
-    "ts-node": "ts-node-dev src/index.ts"
+    "ts-node": "ts-node-dev src/index.ts",
+    "client": "npm run start --prefix client",
+    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
   "author": "",
   "license": "ISC",

@@ -44,8 +44,9 @@ export const SessionTable: FC<SessionTableProps> = ({
                     <Space size="middle">
                         <button
                             onClick={() => {
-                                setIsModalVisible(true);
+                                console.log('edit' + session);
                                 setSessionForEdit(session);
+                                setIsModalVisible(true);
                             }}
                         >
                             Изменить

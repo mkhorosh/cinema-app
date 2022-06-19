@@ -1,13 +1,13 @@
 import React, { FC, PropsWithChildren, useEffect } from 'react';
 import { Avatar, Layout, Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
 import { RoutesAuth } from './RoutesAuth.component';
 import { RootState } from '../store/reducers/rootReducer';
-import { connect } from 'react-redux';
 import { logOut, setLogin } from '../store/actions/users.actions';
 import { AppProps } from './App.types';
 
-export const App: FC<AppProps> = ({
+const App: FC<AppProps> = ({
     isAuth,
     setLoginAction,
     logoutAction
@@ -15,7 +15,7 @@ export const App: FC<AppProps> = ({
     useEffect(() => {
         const data: string | null = localStorage.getItem('USER_DATA');
         if (data) {
-            let dataObject = JSON.parse(data);
+            const dataObject = JSON.parse(data);
             setLoginAction(dataObject.login, dataObject.token);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -23,7 +23,7 @@ export const App: FC<AppProps> = ({
     return (
         <Layout>
             <Layout.Header>
-                <Menu mode="horizontal" theme={'dark'}>
+                <Menu mode="horizontal" theme="dark">
                     {isAuth && (
                         <Menu.Item key="2" onClick={logoutAction}>
                             <Avatar icon={<UserOutlined />} /> Выйти
@@ -40,7 +40,7 @@ export const App: FC<AppProps> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-    isAuth: state.users.login ? true : false
+    isAuth: !!state.users.login
 });
 
 export default connect(mapStateToProps, {

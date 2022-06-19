@@ -44,7 +44,7 @@ export const SessionForm: FC<SessionFormProps> = ({
         currentDate && currentDate < moment().startOf('day');
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let [iconGenre, setIconGenre] = useState(
+    const [iconGenre, setIconGenre] = useState(
         sessionInfo ? sessionInfo.genre : ''
     );
 

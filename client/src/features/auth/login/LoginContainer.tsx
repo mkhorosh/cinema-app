@@ -4,7 +4,7 @@ import { logIn } from '../../../store/actions/users.actions';
 import { Login } from './Login.component';
 import { LoginContainerProps, UserData } from './Login.types';
 
-export const LoginContainer: FC<LoginContainerProps> = ({
+const LoginContainer: FC<LoginContainerProps> = ({
     loginAction
 }: PropsWithChildren<LoginContainerProps>) => {
     const onFinish = useCallback(

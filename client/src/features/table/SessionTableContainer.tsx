@@ -9,7 +9,7 @@ import { RootState } from '../../store/reducers/rootReducer';
 import { SessionTableContainerProps } from './SessionTableContainer.types';
 import { getUsers } from '../../store/actions/users.actions';
 
-export const SessionTableContainer: FC<SessionTableContainerProps> = ({
+const SessionTableContainer: FC<SessionTableContainerProps> = ({
     sessions,
     users,
     isLoading,

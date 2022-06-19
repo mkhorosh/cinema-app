@@ -8,12 +8,12 @@
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module",
-        "project": ["tsconfig.json"],
         "ecmaFeatures": {
             "modules": true
-        }
+        },
+        "project": ["tsconfig.json"]
     },
-    "plugins": ["@typescript-eslint", "prettier", "react-hooks", "import"],
+    "plugins": ["@typescript-eslint", "prettier", "react-hooks"],
     "rules": {
         "prettier/prettier": ["error"],
         "no-duplicate-imports": "error",

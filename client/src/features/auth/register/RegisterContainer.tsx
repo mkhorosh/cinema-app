@@ -4,7 +4,7 @@ import { register } from '../../../store/actions/users.actions';
 import { Register } from './Register.component';
 import { RegisterContainerProps, RegisterData } from './Register.types';
 
-export const RegisterContainer: FC<RegisterContainerProps> = ({
+const RegisterContainer: FC<RegisterContainerProps> = ({
     registerAction
 }: PropsWithChildren<RegisterContainerProps>) => {
     const onFinish = useCallback(

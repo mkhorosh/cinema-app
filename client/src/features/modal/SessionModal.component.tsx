@@ -13,7 +13,7 @@ import {
     SessionModalProps
 } from './SessionModal.types';
 
-export const SessionModal: FC<SessionModalProps> = ({
+const SessionModal: FC<SessionModalProps> = ({
     showModal,
     onClose,
     type,

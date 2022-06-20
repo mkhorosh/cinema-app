@@ -40,6 +40,7 @@
         "react/prop-types": "off",
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/quotes": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "@typescript-eslint/camelcase": "off"
     }
 }

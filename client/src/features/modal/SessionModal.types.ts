@@ -24,7 +24,7 @@ export interface EditValues {
     genre: string;
 }
 
-export interface EditSessionI {
+interface EditSessionI {
     id: string;
     filmName: string;
     filmDescription: string;

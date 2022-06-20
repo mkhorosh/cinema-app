@@ -10,7 +10,9 @@ interface CreateSessionButtonProps {
     users: User[];
 }
 
-const CreateSessionButton: FC<CreateSessionButtonProps> = ({ users }) => {
+export const CreateSessionButton: FC<CreateSessionButtonProps> = ({
+    users
+}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const [form] = Form.useForm();

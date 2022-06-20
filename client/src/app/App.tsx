@@ -1,13 +1,15 @@
 import React, { FC, PropsWithChildren, useEffect } from 'react';
 import { Avatar, Layout, Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { connect } from 'react-redux';
 import { RoutesAuth } from './RoutesAuth.component';
 import { RootState } from '../store/reducers/rootReducer';
+import { connect } from 'react-redux';
 import { logOut, setLogin } from '../store/actions/users.actions';
 import { AppProps } from './App.types';
+import { Footer } from '../features/footer/Footer.component';
+import { StyledContent } from './App.style';
 
-const App: FC<AppProps> = ({
+export const App: FC<AppProps> = ({
     isAuth,
     setLoginAction,
     logoutAction
@@ -15,7 +17,7 @@ const App: FC<AppProps> = ({
     useEffect(() => {
         const data: string | null = localStorage.getItem('USER_DATA');
         if (data) {
-            const dataObject = JSON.parse(data);
+            let dataObject = JSON.parse(data);
             setLoginAction(dataObject.login, dataObject.token);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -23,7 +25,7 @@ const App: FC<AppProps> = ({
     return (
         <Layout>
             <Layout.Header>
-                <Menu mode="horizontal" theme="dark">
+                <Menu mode="horizontal" theme={'dark'}>
                     {isAuth && (
                         <Menu.Item key="2" onClick={logoutAction}>
                             <Avatar icon={<UserOutlined />} /> Выйти
@@ -31,16 +33,16 @@ const App: FC<AppProps> = ({
                     )}
                 </Menu>
             </Layout.Header>
-            <Layout.Content>
+            <StyledContent>
                 <RoutesAuth isAuth={isAuth} />
-            </Layout.Content>
-            <Layout.Footer>cinema-app 2022 created by mkhorosh</Layout.Footer>
+            </StyledContent>
+            <Footer />
         </Layout>
     );
 };
 
 const mapStateToProps = (state: RootState) => ({
-    isAuth: !!state.users.login
+    isAuth: state.users.login ? true : false
 });
 
 export default connect(mapStateToProps, {

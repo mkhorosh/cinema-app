@@ -25,7 +25,7 @@ function* getUsersSaga() {
 }
 
 function* LoginSaga({ payload }: LoginAction) {
-    const hide = message.loading('Action in progress..', 0);
+    const hide = message.loading('Загрузка...', 0);
     try {
         const response: LoginResponse = yield call(LoginApi, payload);
         if (response.status === 200) {
@@ -52,7 +52,7 @@ function* LogoutSaga() {
 }
 
 function* RegisterSaga({ payload }: RegisterAction) {
-    const hide = message.loading('Action in progress..', 0);
+    const hide = message.loading('Загрузка...', 0);
     try {
         const response: RegisterResponse = yield call(RegisterApi, payload);
         if (response.status === 200) {

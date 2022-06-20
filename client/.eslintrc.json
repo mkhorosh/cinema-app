@@ -8,12 +8,12 @@
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module",
+        "project": ["tsconfig.json"],
         "ecmaFeatures": {
             "modules": true
-        },
-        "project": ["tsconfig.json"]
+        }
     },
-    "plugins": ["@typescript-eslint", "prettier", "react-hooks"],
+    "plugins": ["@typescript-eslint", "prettier", "react-hooks", "import"],
     "rules": {
         "prettier/prettier": ["error"],
         "no-duplicate-imports": "error",
@@ -40,8 +40,6 @@
         "react/prop-types": "off",
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/quotes": "off",
-        "no-underscore-dangle": "off",
-        "camelcase": "off",
-        "@typescript-eslint/camelcase": ["warn"]
+        "no-underscore-dangle": "off"
     }
 }

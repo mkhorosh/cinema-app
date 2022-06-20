@@ -44,10 +44,9 @@ export const SessionTable: FC<SessionTableProps> = ({
                     <Space size="middle">
                         <button
                             onClick={() => {
-                                setSessionForEdit(session);
                                 setIsModalVisible(true);
+                                setSessionForEdit(session);
                             }}
-                            type="button"
                         >
                             Изменить
                         </button>
@@ -60,10 +59,7 @@ export const SessionTable: FC<SessionTableProps> = ({
             key: 'delete',
             render: (session: Session) => (
                 <Space size="middle">
-                    <button
-                        onClick={() => showDeleteConfirm(session.id)}
-                        type="button"
-                    >
+                    <button onClick={() => showDeleteConfirm(session.id)}>
                         Удалить
                     </button>
                 </Space>

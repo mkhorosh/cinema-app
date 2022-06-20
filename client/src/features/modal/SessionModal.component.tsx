@@ -9,11 +9,11 @@ import {
 import { SessionForm } from '../form/SessionForm.component';
 import {
     CreateValues,
-    EditSessionI,
+    EditValues,
     SessionModalProps
 } from './SessionModal.types';
 
-const SessionModal: FC<SessionModalProps> = ({
+export const SessionModal: FC<SessionModalProps> = ({
     showModal,
     onClose,
     type,
@@ -40,11 +40,7 @@ const SessionModal: FC<SessionModalProps> = ({
         [createSessionAction]
     );
     const onFinishEdit = useCallback(
-        (values: EditSessionI): void => {
-            console.log('sessionInfo ');
-            console.log(sessionInfo);
-            console.log('values ');
-            console.log(values);
+        (values: EditValues): void => {
             editSessionAction({
                 ...values,
                 id: sessionInfo ? sessionInfo.id : '',
@@ -57,7 +53,6 @@ const SessionModal: FC<SessionModalProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [editSessionAction, sessionInfo]
     );
-
     const modalOnSubmit = type === 'CREATE' ? onFinishCreate : onFinishEdit;
     return (
         <Modal

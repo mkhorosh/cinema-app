@@ -1,11 +1,10 @@
-import { call, put, SagaReturnType, takeEvery } from 'redux-saga/effects';
-import { message } from 'antd';
 import {
     deleteSessionApi,
     getSessionsApi,
     editSessionApi,
     createSessionApi
 } from './api';
+import { call, put, SagaReturnType, takeEvery } from 'redux-saga/effects';
 import {
     CreateSessionAction,
     DeleteSessionAction,
@@ -17,6 +16,7 @@ import {
     setLoading,
     setSessions
 } from '../actions/sessions.actions';
+import { message } from 'antd';
 
 type DeleteResponse = SagaReturnType<typeof deleteSessionApi>;
 type GetSessionsResponse = SagaReturnType<typeof getSessionsApi>;

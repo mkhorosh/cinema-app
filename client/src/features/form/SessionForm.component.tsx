@@ -33,16 +33,18 @@ export const SessionForm: FC<SessionFormProps> = ({
               });
     }, [form, sessionInfo]);
 
-    const usersOptions = users.map((user: User) => ({
-        label: user.name,
-        value: user.name
-    }));
+    const usersOptions = users.map((user: User) => {
+        return {
+            label: user.name,
+            value: user.name
+        };
+    });
 
     const disabledDate = (currentDate: Moment) =>
         currentDate && currentDate < moment().startOf('day');
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [iconGenre, setIconGenre] = useState(
+    let [iconGenre, setIconGenre] = useState(
         sessionInfo ? sessionInfo.genre : ''
     );
 
@@ -54,9 +56,6 @@ export const SessionForm: FC<SessionFormProps> = ({
             onFinish={handleFormSubmit}
             form={form}
         >
-            {/* <Form.Item label="id" name="id" style={{ display: 'none' }}>
-                <Input />
-            </Form.Item> */}
             <Form.Item label="Иконка" name="icon">
                 <SessionIcon genre={iconGenre} />
             </Form.Item>

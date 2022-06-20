@@ -41,6 +41,7 @@
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/quotes": "off",
         "no-underscore-dangle": "off",
-        "@typescript-eslint/camelcase": "off"
+        "camelcase": "off",
+        "@typescript-eslint/camelcase": ["warn"]
     }
 }
